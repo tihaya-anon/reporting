@@ -1,0 +1,9 @@
+# Local/editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*~
+
+# Typst build output
+diatypst/*.pdf
