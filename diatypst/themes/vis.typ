@@ -332,6 +332,30 @@
 
   show heading.where(level: 2): set text(fill: ink)
 
+  show table: set table(
+    fill: (x, y) => {
+      if y == 0 {
+        primary
+      } else if calc.odd(y) {
+        secondary
+      } else {
+        background
+      }
+    },
+    stroke: (x, y) => {
+      if y == 0 {
+        0.6pt + primary
+      } else {
+        0.6pt + background
+      }
+    },
+  )
+
+  show table.cell.where(y: 0): it => {
+    set text(fill: background, weight: "bold")
+    it
+  }
+
   show raw.where(block: false): it => box(
     fill: secondary,
     inset: (x: 2pt, y: 0.45pt),
