@@ -2,13 +2,13 @@
 
 == 需要补充的事实
 
-这版已经根据新增信息调整了重点。EFS release、supervisor 和 Dagster/dlt metadata 的定位已经可以写成确定结论；后续如果要把报告从“建设复盘”推进到“可执行设计说明”，还需要补一些具体证据。
+这版已经根据新增信息调整了重点。EFS release、supervisor、ECR cache、异步 MCP 和 hooks 的定位已经可以写成确定结论；后续如果要把报告从“建设复盘”推进到“可执行设计说明”，还需要补一些运行证据和边界条件。
 
-- EFS release：release 包结构、metadata schema、activation wait 和 fallback 记录。
+- EFS release：Python 包结构、git sha metadata、activation wait 和 fallback 记录。
 - supervisor：proxy 切换、healthcheck、旧 server shutdown 和失败不切换的运行样例。
-- ECR cache：是 CodeBuild 本地缓存、远端 registry cache，还是专门的 cache repo；命中率如何衡量。
-- 异步 MCP：job id、jsonl 路径、tail 协议、失败摘要和 artifact 保留策略。
-- hooks：formatter 和 lint 的触发边界，是否会阻塞 agent 结束，失败时如何反馈。
+- ECR cache repo：git sha tag、latest tag 推进、缓存命中和 CD 成功后的 tag 变更记录。
+- 异步 MCP：回调句柄、jsonl 路径、预置 jq pattern、失败摘要和 artifact 保留策略。
+- hooks：formatter warning 样例、lint block 样例，以及 agent 被 block 后的自修复记录。
 
 == 下一步报告结构
 
@@ -28,8 +28,8 @@
 
 == 建议追问方向
 
-为了把下一版写得更深，我建议优先确认三件事：
+为了把下一版写得更深，我建议优先补三类证据：
 
-+ EFS release 和 supervisor 的实际控制流：一次 agent 改代码后，最快路径是怎样从 commit 进入 Dagster code location 的？
-+ Dagster 和 dlt metadata 到 AWS debug 的字段映射：哪些字段已经稳定沉淀，哪些还只是日志输出？
-+ 多级缓存的典型命令和输出：页面请求、S3 sync、DuckDB validation、ECR cache 分别如何作为 agent 验证证据？
++ 发布证据：git sha release metadata、supervisor healthcheck、proxy 切换和 CD fail 不切换的样例。
++ 元数据证据：Dagster run metadata、dlt load/schema/resource/state 与 AWS task/log/partition 指针的样例。
++ 反馈证据：ECR cache tag 推进、异步 MCP summary/diagnostics、formatter warning 和 lint block 的样例。

@@ -11,7 +11,9 @@ DataAgent 的运行时部署在 AWS ECS/Fargate 上，天然获得了一层容�
 
 == EFS release 缩短部署时间
 
-后续引入 EFS release 的意义，是把 Docker 镜像从“业务代码 + 依赖 + 运行时”的完整包，改成更稳定的运行时依赖包。Docker 主要负责 `uv sync` 后的依赖和执行环境，业务代码放到 EFS，由运行时挂载 EFS 后执行。这样大部分业务代码变更不再需要重新构建完整镜像，部署等待时间明显缩短。
+后续引入 EFS release 的意义，是把 Docker 镜像从“业务代码 + 依赖 + 运行时”的完整包，改成更稳定的运行时依赖包。Docker 主要负责 `uv sync` 后的依赖和执行环境；业务代码作为 Python 包发布，解压到 EFS，再由运行时 image 挂载 EFS 后执行。这样大部分业务代码变更不再需要重新构建完整镜像，部署等待时间明显缩短。
+
+release metadata 的核心标识是 git sha。CD 通过 git sha 指定要激活的发布版本；如果新版本启动或健康检查失败，就不切换到最新提交，同时把 CD 标记为失败。这个 fallback 的关键不是“切回去”，而是“不切过去”，上一版服务继续对外提供能力。
 
 #table(
   columns: (1fr, 1.35fr, 1.35fr),
@@ -19,7 +21,7 @@ DataAgent 的运行时部署在 AWS ECS/Fargate 上，天然获得了一层容�
   align: (left, left, left),
   [发布层级], [变更面], [适合场景],
   [ECS/Fargate 镜像], [较大，主要包含运行环境和依赖], [基础镜像、依赖、系统配置变化],
-  [EFS release], [较小，主要是业务代码和 release metadata 切换], [高频代码迭代、Dagster code location 更新],
+  [EFS release], [较小，主要是 Python 包和 git sha metadata 切换], [高频代码迭代、Dagster code location 更新],
   [supervisor], [进程级启动、健康检查与切换], [缩短发布反馈，同时保持旧版本可用],
 )
 

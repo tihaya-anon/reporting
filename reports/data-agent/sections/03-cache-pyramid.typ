@@ -15,7 +15,7 @@ DataAgent 的缓存体系可以分成开发缓存、数据缓存、CI 缓存和 
 
 == CI/CD 侧缓存
 
-CI/CD 的缓存重点是减少 agent 每次迭代等待流水线的时间。
+CI/CD 的缓存重点是减少 agent 每次迭代等待流水线的时间。其中 ECR cache 是一个自建 cache repo：每次 CI 成功构建后都会把镜像推到 cache repo，tag 使用 git sha；当 CD 成功后，再把 `latest` tag 指向这一次 git sha。
 
 #table(
   columns: (1fr, 1.45fr, 1.35fr),
@@ -23,7 +23,7 @@ CI/CD 的缓存重点是减少 agent 每次迭代等待流水线的时间。
   align: (left, left, left),
   [缓存/减面机制], [解决的问题], [对 agent 的价值],
   [Docker layer cache], [依赖层不重复构建], [普通代码改动更快看到 CI 结果],
-  [ECR cache], [远端镜像层复用和拉取加速], [减少构建和部署等待],
+  [ECR cache repo], [CI 成功产物按 git sha 持久化，CD 成功后推进 latest], [复用已验证镜像，减少重复构建和发布歧义],
   [ECS 到 EFS release], [避免每次全量镜像发布], [高频代码迭代更快进入 Dagster],
   [Terraform 到 Terragrunt], [缩小 IaC 变更作用域], [agent 可以只 plan/apply 相关组件],
   [component detection], [避免无关 diff 触发部署], [减少噪声反馈和误部署],
