@@ -1,1 +1,1 @@
-#import "themes/vis.typ": vis-slides
+#import "themes/vis.typ": vis-slides, title-slide

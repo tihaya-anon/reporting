@@ -6,4 +6,4 @@
 *~
 
 # Typst build output
-diatypst/*.pdf
+*.pdf

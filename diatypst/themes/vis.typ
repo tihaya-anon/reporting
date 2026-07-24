@@ -191,6 +191,7 @@
   authors: (),
   ratio: 16 / 9,
   layout: "large",
+  break-after: true,
 ) = {
   let author-list = _authors(authors)
   let height = _page-height(layout)
@@ -240,7 +241,9 @@
     )
   ]
 
-  pagebreak()
+  if break-after {
+    pagebreak()
+  }
 }
 
 #let vis-slides(
