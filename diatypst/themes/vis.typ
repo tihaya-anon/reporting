@@ -316,7 +316,7 @@
   show raw: set text(font: mono-fonts)
 
   show raw.where(block: false): it => context {
-    let inline-padding-y = 1.1pt
+    let inline-padding-y = 1.2pt
     let body-ascent = measure(
       text(
         font: fonts,
@@ -343,6 +343,7 @@
       stroke: 0.45pt + code-border,
       inset: (x: 2.4pt, y: 0pt),
       radius: 1pt,
+      fill: secondary
     )[
       #align(horizon)[#code-text]
     ]
