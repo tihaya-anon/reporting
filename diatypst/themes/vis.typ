@@ -9,6 +9,7 @@
 #let muted = rgb("#5F6368")
 #let border = rgb("#E6E0DC")
 #let fonts = ("Noto Sans CJK SC", "Noto Sans")
+#let math-fonts = ("Noto Sans Math", "Noto Sans CJK SC", "Noto Sans")
 #let mono-fonts = ("Maple Mono NF", "Noto Sans Mono", "Noto Sans CJK SC", "Noto Sans")
 
 #let _layouts = (
@@ -265,6 +266,7 @@
   }
 
   set text(font: fonts, fill: ink)
+  show math.equation: set text(font: math-fonts, fill: ink)
   let scale = _scale(layout)
   let agenda-dest = if toc { <vis-agenda> } else { none }
 

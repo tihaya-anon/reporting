@@ -28,6 +28,7 @@ Usage: scripts/install-fonts.sh [--dir PATH] [--system] [--force]
 Installs these fonts by default into assets/fonts:
   - Noto Sans CJK SC
   - Noto Sans
+  - Noto Sans Math
   - Maple Mono NF
 
 Options:
@@ -109,7 +110,11 @@ install_font_assets() {
   TMP_DIR="$(mktemp -d)"
   trap cleanup EXIT
 
-  mkdir -p "$FONT_DIR/noto-sans" "$FONT_DIR/noto-sans-cjk-sc" "$FONT_DIR/maple-mono-nf"
+  mkdir -p \
+    "$FONT_DIR/noto-sans" \
+    "$FONT_DIR/noto-sans-cjk-sc" \
+    "$FONT_DIR/noto-sans-math" \
+    "$FONT_DIR/maple-mono-nf"
 
   echo "Installing Noto Sans to $FONT_DIR/noto-sans"
   download \
@@ -131,6 +136,11 @@ install_font_assets() {
       "https://raw.githubusercontent.com/notofonts/noto-cjk/main/Sans/OTF/SimplifiedChinese/NotoSansCJKsc-${weight}.otf" \
       "$FONT_DIR/noto-sans-cjk-sc/NotoSansCJKsc-${weight}.otf"
   done
+
+  echo "Installing Noto Sans Math to $FONT_DIR/noto-sans-math"
+  download \
+    "https://notofonts.github.io/math/fonts/NotoSansMath/full/otf/NotoSansMath-Regular.otf" \
+    "$FONT_DIR/noto-sans-math/NotoSansMath-Regular.otf"
 
   echo "Installing Maple Mono NF to $FONT_DIR/maple-mono-nf"
   if [[ "${FORCE:-0}" == "1" ]] || ! find "$FONT_DIR/maple-mono-nf" -type f \( -name "*.otf" -o -name "*.ttf" -o -name "*.ttc" \) -print -quit | grep -q .; then
