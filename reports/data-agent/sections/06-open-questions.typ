@@ -2,10 +2,10 @@
 
 == 需要补充的事实
 
-这版已经根据新增信息调整了重点，但还有几处最好继续补证据或机制细节，后续可以让报告更扎实。
+这版已经根据新增信息调整了重点。EFS release、supervisor 和 Dagster/dlt metadata 的定位已经可以写成确定结论；后续如果要把报告从“建设复盘”推进到“可执行设计说明”，还需要补一些具体证据。
 
-- supervisor：它具体管理哪些进程，重启策略是什么，如何和 ECS task、Dagster run、CloudWatch log 关联。
-- EFS release：release 包结构、metadata schema、activation wait、fallback 和 rollback 的准确流程。
+- EFS release：release 包结构、metadata schema、activation wait 和 fallback 记录。
+- supervisor：proxy 切换、healthcheck、旧 server shutdown 和失败不切换的运行样例。
 - ECR cache：是 CodeBuild 本地缓存、远端 registry cache，还是专门的 cache repo；命中率如何衡量。
 - 异步 MCP：job id、jsonl 路径、tail 协议、失败摘要和 artifact 保留策略。
 - hooks：formatter 和 lint 的触发边界，是否会阻塞 agent 结束，失败时如何反馈。
@@ -31,5 +31,5 @@
 为了把下一版写得更深，我建议优先确认三件事：
 
 + EFS release 和 supervisor 的实际控制流：一次 agent 改代码后，最快路径是怎样从 commit 进入 Dagster code location 的？
-+ Dagster metadata 到 AWS debug 的字段映射：现在 run metadata 里有哪些 task/log/partition/source 指针，哪些还要补？
-+ 多级缓存的实际目录和命令：页面请求、S3 sync、DuckDB validation、ECR cache 分别对应哪些脚本和典型输出？
++ Dagster 和 dlt metadata 到 AWS debug 的字段映射：哪些字段已经稳定沉淀，哪些还只是日志输出？
++ 多级缓存的典型命令和输出：页面请求、S3 sync、DuckDB validation、ECR cache 分别如何作为 agent 验证证据？
