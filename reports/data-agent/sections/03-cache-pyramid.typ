@@ -1,12 +1,12 @@
-= 多级缓存
+= 再小范围验证
 
-== 缓存不是只给机器用
+== 验证要分层
 
-DataAgent 的缓存体系可以分成开发缓存、数据缓存、CI 缓存和 CD 缓存。缓存同时承担两件事：减少等待时间，帮助 agent 按风险分层验证。agent 先用局部样例确认假设，再进入更完整、更接近生产的路径。
+DataAgent 的缓存分成开发缓存、数据缓存、CI 缓存和 CD 缓存。它们减少等待时间，也让 agent 按风险分层验证：先用局部样例确认假设，再进入更接近生产的路径。
 
 == 开发侧缓存
 
-从开发角度，DataAgent 提供了多种本地或小批量验证入口。agent 可以先证明 API、schema 和 partition 逻辑成立，再触发真实调度。
+从开发角度，DataAgent 提供了几类本地或小批量验证入口。agent 可以先证明 API、schema 和 partition 逻辑成立，再触发真实调度。
 
 - 页面请求脚本：允许本地对 API 或页面发起小批量请求，验证 auth、pagination、response shape、nullable 字段和限流策略。
 - backfill input / source smoke helper：用较小日期窗口或资源范围验证 source 到 raw event 的路径。
@@ -15,7 +15,7 @@ DataAgent 的缓存体系可以分成开发缓存、数据缓存、CI 缓存和 
 
 == CI/CD 侧缓存
 
-CI/CD 的缓存重点是减少 agent 每次迭代等待流水线的时间。其中 ECR cache 是一个自建 cache repo：每次 CI 成功构建后都会把镜像推到 cache repo，tag 使用 git sha；当 CD 成功后，再把 `latest` tag 指向这一次 git sha。
+CI/CD 侧缓存主要是减少 agent 每次迭代等待流水线的时间。其中 ECR cache 是一个自建 cache repo：每次 CI 成功构建后都会把镜像推到 cache repo，tag 使用 git sha；当 CD 成功后，再把 `latest` tag 指向这一次 git sha。
 
 #table(
   columns: (1fr, 1.45fr, 1.35fr),
@@ -29,7 +29,7 @@ CI/CD 的缓存重点是减少 agent 每次迭代等待流水线的时间。其�
   [component detection], [避免无关 diff 触发部署], [减少噪声反馈和误部署],
 )
 
-== 缓存定义验证顺序
+== 固定验证顺序
 
 多级缓存给 agent 一条固定验证顺序。
 
@@ -39,4 +39,4 @@ CI/CD 的缓存重点是减少 agent 每次迭代等待流水线的时间。其�
 + 再触发 dev/stage pipeline，验证 IaC、runtime 和 Dagster metadata。
 + 最后进入 prod 发布。
 
-这条顺序让 agent 在本地、小样本和 dev/stage 中暴露问题。只有前面的证据足够，变更才进入 prod 发布。
+这条顺序让 agent 尽量在本地、小样本和 dev/stage 中暴露问题。前面的证据够了，变更才进入 prod 发布。
