@@ -7,3 +7,6 @@
 
 # Typst build output
 *.pdf
+
+# Downloaded font assets
+assets/fonts

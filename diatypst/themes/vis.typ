@@ -36,8 +36,8 @@
 
 #let _scale(layout) = _page-height(layout) / 12cm
 
-#let logo-light(width: auto) = image("../../vis/logo.svg", width: width)
-#let logo-dark(width: auto) = image("../../vis/logo-black.svg", width: width)
+#let logo-light(width: auto) = image("../../assets/logo.svg", width: width)
+#let logo-dark(width: auto) = image("../../assets/logo-black.svg", width: width)
 
 #let _meta(label, value, scale: 1) = {
   if value != none [
