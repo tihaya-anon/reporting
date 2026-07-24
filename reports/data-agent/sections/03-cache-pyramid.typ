@@ -2,11 +2,11 @@
 
 == 缓存不是只给机器用
 
-DataAgent 的缓存体系可以分成开发缓存、数据缓存、CI 缓存和 CD 缓存。这里的“缓存”不只是性能优化，更是 agent 的验证梯度：先用便宜、局部、可重复的东西验证，再进入昂贵、完整、接近生产的路径。
+DataAgent 的缓存体系可以分成开发缓存、数据缓存、CI 缓存和 CD 缓存。缓存同时承担两件事：减少等待时间，帮助 agent 按风险分层验证。agent 先用局部样例确认假设，再进入更完整、更接近生产的路径。
 
 == 开发侧缓存
 
-从开发角度，DataAgent 提供了多种本地或小批量验证入口，让 agent 可以先证明假设，再触发真实调度。
+从开发角度，DataAgent 提供了多种本地或小批量验证入口。agent 可以先证明 API、schema 和 partition 逻辑成立，再触发真实调度。
 
 - 页面请求脚本：允许本地对 API 或页面发起小批量请求，验证 auth、pagination、response shape、nullable 字段和限流策略。
 - backfill input / source smoke helper：用较小日期窗口或资源范围验证 source 到 raw event 的路径。
@@ -21,7 +21,7 @@ CI/CD 的缓存重点是减少 agent 每次迭代等待流水线的时间。其�
   columns: (1fr, 1.45fr, 1.35fr),
   inset: 5pt,
   align: (left, left, left),
-  [缓存/减面机制], [解决的问题], [对 agent 的价值],
+  [缓存/减面机制], [解决的问题], [agent 怎么用],
   [Docker layer cache], [依赖层不重复构建], [普通代码改动更快看到 CI 结果],
   [ECR cache repo], [CI 成功产物按 git sha 持久化，CD 成功后推进 latest], [复用已验证镜像，减少重复构建和发布歧义],
   [ECS 到 EFS release], [避免每次全量镜像发布], [高频代码迭代更快进入 Dagster],
@@ -29,9 +29,9 @@ CI/CD 的缓存重点是减少 agent 每次迭代等待流水线的时间。其�
   [component detection], [避免无关 diff 触发部署], [减少噪声反馈和误部署],
 )
 
-== 缓存也是安全边界
+== 缓存定义验证顺序
 
-多级缓存的深层价值，是让 agent 在不同风险等级上行动。
+多级缓存给 agent 一条固定验证顺序。
 
 + 先本地请求，验证 API 形状。
 + 再同步 S3 样例，用 DuckDB 验证 ETL。
@@ -39,4 +39,4 @@ CI/CD 的缓存重点是减少 agent 每次迭代等待流水线的时间。其�
 + 再触发 dev/stage pipeline，验证 IaC、runtime 和 Dagster metadata。
 + 最后进入 prod 发布。
 
-这种梯度让 agent 可以频繁学习系统，但不必每次都把学习成本转嫁给生产环境。
+这条顺序让 agent 在本地、小样本和 dev/stage 中暴露问题。只有前面的证据足够，变更才进入 prod 发布。

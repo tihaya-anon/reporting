@@ -2,16 +2,16 @@
 
 == 从一开始区分环境
 
-DataAgent 早期就区分 dev、stage、prod 分支，并把 CI/CD 纳入默认工作流。这一点对 agent 建设很关键：agent 不只是在改代码，它还需要理解“这段代码会在哪个环境生效、通过什么流水线发布、失败后会影响什么范围”。
+DataAgent 早期就区分 dev、stage、prod 分支，并把 CI/CD 纳入默认工作流。agent 改代码时，必须同时知道三件事：这段代码会在哪个环境生效，通过哪条流水线发布，失败后会影响多大范围。
 
 - dev 分支用于快速验证 runtime、source、backfill 和部署脚本。
 - stage 分支用于模拟真实网络、权限、schedule 和数据落点。
-- prod 分支保留更稳定的发布边界，避免 agent 的高频迭代直接扩大影响面。
+- prod 分支保留更稳定的发布边界，防止高频迭代直接放大影响面。
 - CI/CD 把 build、deploy、component detection、image tag、diff base、last applied commit 这些状态显式化。
 
-== IaC 是 agent 的可观测性工程
+== IaC 把云端状态拉回代码
 
-后续引入 Terraform/Terragrunt，不只是为了自动建资源，而是把基建状态变成 agent 可以读取的代码资产。对于 AI agent，这等价于把“系统外部状态”尽可能拉回本地上下文。
+后续引入 Terraform/Terragrunt，把网络、权限、运行时和 state 依赖都变成了 agent 可以读取的代码资产。agent 先看这些文件，再决定要不要调用 AWS MCP 或实际执行命令。
 
 #table(
   columns: (1fr, 1.45fr, 1.4fr),
@@ -27,12 +27,12 @@ DataAgent 早期就区分 dev、stage、prod 分支，并把 CI/CD 纳入默认�
 
 == 从日志看推进路径
 
-日志里多次出现 CI/CD buildspec、runtime role assume、Terraform state、component detection、pipeline source、Terragrunt roots、control-plane state 等修复。这些看起来是部署细节，但累计起来构成 DataAgent 的本地可读系统模型。
+日志里多次出现 CI/CD buildspec、runtime role assume、Terraform state、component detection、pipeline source、Terragrunt roots、control-plane state 等修复。单看像部署细节，连起来就是 DataAgent 的本地系统模型。
 
 - 5 月：先把 dev/stage、runtime role、exec role、build cache 和部署脚本打通。
 - 6 月：引入更通用的 IaC 与 runtime 模块，拆分 state、remote state 和 Terraform roots。
 - 7 月：围绕 dev/stage rollout、Pulumi/Terragrunt state、component routing、pipeline stages 做收敛。
 
-== 建设意义
+== 本章结论
 
-CI/CD 和 IaC 最终降低的是 agent 的认知成本。agent 不需要每次都问“线上到底是什么样”，它可以先读代码、读 state 引用、读 pipeline 规则，再决定是否需要调用 AWS MCP 或跑实际命令。
+CI/CD 和 IaC 给 agent 的不是“自动化”这个抽象收益，而是一套可读的判断顺序：先读代码，再读 state 引用和 pipeline 规则，最后才查 AWS 现场。这样每次变更都能先确定环境、权限、发布路径和影响范围。
