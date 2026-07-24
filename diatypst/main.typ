@@ -1,4 +1,5 @@
 #import "lib.typ": vis-slides
+#import "diagrams.typ": mermaid-diagram
 
 #show: vis-slides.with(
   title: "VIS 主题样张",
@@ -101,6 +102,20 @@ $ "评分" = alpha dot "质量" + beta dot "清晰度" - gamma dot "风险" $
 ) <sample-figure>
 
 参见 @sample-figure。
+
+= Mermaid 图形
+
+== 组件图 <diagram-demo>
+
+#mermaid-diagram("../vis/diagrams/fig/component-flow.svg", height: 4.4cm)
+
+== 类图
+
+#mermaid-diagram("../vis/diagrams/fig/class-model.svg", width: 74%, height: 6.9cm)
+
+== 时序图
+
+#mermaid-diagram("../vis/diagrams/fig/render-sequence.svg", height: 5.8cm)
 
 = 栅格与布局
 

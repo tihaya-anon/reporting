@@ -1,0 +1,30 @@
+{
+  "theme": "base",
+  "htmlLabels": false,
+  "themeVariables": {
+    "background": "#FEFDFB",
+    "fontFamily": "Noto Sans CJK SC, Noto Sans, sans-serif",
+    "primaryColor": "#FFEEE5",
+    "primaryTextColor": "#171717",
+    "primaryBorderColor": "#FF7A3D",
+    "secondaryColor": "#FEFDFB",
+    "secondaryTextColor": "#171717",
+    "secondaryBorderColor": "#E6E0DC",
+    "tertiaryColor": "#FFF8F4",
+    "tertiaryTextColor": "#171717",
+    "tertiaryBorderColor": "#E6E0DC",
+    "lineColor": "#FF7A3D",
+    "textColor": "#171717",
+    "mainBkg": "#FFEEE5",
+    "secondBkg": "#FEFDFB",
+    "nodeBorder": "#FF7A3D",
+    "clusterBkg": "#FFF8F4",
+    "clusterBorder": "#E6E0DC",
+    "actorBkg": "#FFEEE5",
+    "actorBorder": "#FF7A3D",
+    "actorTextColor": "#171717",
+    "activationBkgColor": "#FFEEE5",
+    "activationBorderColor": "#FF7A3D",
+    "sequenceNumberColor": "#B84612"
+  }
+}

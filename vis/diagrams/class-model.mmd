@@ -1,0 +1,35 @@
+classDiagram
+  direction LR
+
+  class Deck {
+    +title
+    +authors
+    +layout
+    +render()
+    +agenda()
+  }
+
+  class Slide {
+    +heading
+    +body
+    +notes
+    +compose()
+  }
+
+  class Diagram {
+    +nodes
+    +edges
+    +theme
+    +draw()
+  }
+
+  class Asset {
+    +logo
+    +colors
+    +fonts
+    +apply()
+  }
+
+  Deck --> Slide
+  Slide --> Diagram
+  Asset --> Diagram

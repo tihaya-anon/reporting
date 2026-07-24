@@ -1,0 +1,9 @@
+sequenceDiagram
+  participant Author as 作者
+  participant Deck as 报告模板
+  participant Diagram as Mermaid SVG
+
+  Author->>Deck: 写入内容
+  Deck->>Diagram: 生成图像
+  Diagram-->>Deck: 返回 SVG
+  Deck-->>Author: 导出 PDF
