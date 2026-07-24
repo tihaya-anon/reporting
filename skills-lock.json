@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "skills": {
+    "ai-presentation-maker": {
+      "source": "clawhub.ai",
+      "sourceType": "well-known",
+      "computedHash": "c119092e2f8c9c5f3677b38e9c250191441d792f6f18054ef58e9ffdf0919aa6"
+    },
+    "humanizer": {
+      "source": "clawhub.ai",
+      "sourceType": "well-known",
+      "computedHash": "7bfc2bbe1b662f3be3b4932b64ab8ff6fb9622c64e0911a309161aab8e86a69d"
+    },
+    "polish": {
+      "source": "clawhub.ai",
+      "sourceType": "well-known",
+      "computedHash": "5fe245fa8435eacc2f062590cce1a84bffdccf79ffb05724b856cfbd9096842f"
+    }
+  }
+}
