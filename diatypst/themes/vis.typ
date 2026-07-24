@@ -4,6 +4,7 @@
 #let primary-text = rgb("#B84612")
 #let secondary = rgb("#FFEEE5")
 #let background = rgb("#FEFDFB")
+#let code-border = primary
 #let ink = rgb("#171717")
 #let muted = rgb("#5F6368")
 #let border = rgb("#E6E0DC")
@@ -309,6 +310,62 @@
     first-slide: false,
   )
 
+  show raw: set text(font: mono-fonts)
+
+  show raw.where(block: false): it => context {
+    let inline-padding-y = 1.1pt
+    let body-ascent = measure(
+      text(
+        font: fonts,
+        size: 1em,
+        top-edge: "ascender",
+        bottom-edge: "baseline",
+      )[H],
+    ).height
+    let body-descent = measure(
+      text(
+        font: fonts,
+        size: 1em,
+        top-edge: "baseline",
+        bottom-edge: "descender",
+      )[g],
+    ).height
+    let inline-height = body-ascent + body-descent + inline-padding-y * 2
+    let inline-baseline = body-descent - inline-padding-y
+    let code-text = text(size: 1em, fill: ink, it.text)
+
+    box(
+      height: inline-height,
+      baseline: inline-baseline,
+      stroke: 0.45pt + code-border,
+      inset: (x: 2.4pt, y: 0pt),
+      radius: 1pt,
+    )[
+      #align(horizon)[#code-text]
+    ]
+  }
+
+  show raw.where(block: true): it => block(
+    width: 100%,
+    stroke: 0.6pt + code-border,
+    inset: 0pt,
+    radius: 4pt,
+  )[
+    #it
+  ]
+
+  show raw.line: it => context {
+    set block(spacing: 0em)
+    let number-width = measure(numbering("1", it.count)).width
+    grid(
+      columns: (number-width + 0.16cm * scale, 1fr),
+      column-gutter: 0.14cm * scale,
+      align: (right + horizon, left + horizon),
+      text(size: 0.78em, fill: primary-text, numbering("1", it.number)),
+      it.body,
+    )
+  }
+
   show heading.where(level: 1): it => {
     set page(header: none, footer: none, margin: 0cm, fill: background)
     block(width: 100%, height: 100%, inset: 0.72cm * scale)[
@@ -355,14 +412,6 @@
     set text(fill: background, weight: "bold")
     it
   }
-
-  show raw.where(block: false): it => box(
-    fill: secondary,
-    inset: (x: 2pt, y: 0.45pt),
-    radius: 1pt,
-  )[
-    #text(font: mono-fonts, size: 1.06em, fill: ink, it.text)
-  ]
 
   show link: it => {
     if type(it.dest) == str {
