@@ -14,4 +14,4 @@
 #include "sections/03-cache-pyramid.typ"
 #include "sections/04-dagster-metadata-plane.typ"
 #include "sections/05-async-hooks.typ"
-#include "sections/06-open-questions.typ"
+#include "sections/06-summary.typ"
