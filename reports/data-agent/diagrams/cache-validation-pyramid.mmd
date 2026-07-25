@@ -1,8 +1,8 @@
 flowchart LR
-  Local["页面请求脚本<br/>验证 auth pagination response shape"] --> Duck["S3 样例 + DuckDB<br/>验证 parquet schema partition"]
-  Duck --> Smoke["source smoke / 小窗口 backfill<br/>验证 source 到 raw event"]
-  Smoke --> Stage["dev / stage pipeline<br/>验证 IaC runtime metadata"]
-  Stage --> Prod["prod 发布<br/>只在证据足够后进入"]
+  Local["页面请求脚本<br/>秒级反馈<br/>auth pagination shape"] --> Duck["S3 样例 + DuckDB<br/>分钟级反馈<br/>schema partition"]
+  Duck --> Smoke["source smoke<br/>小窗口 backfill"]
+  Smoke --> Stage["stage pipeline<br/>验证 runtime metadata"]
+  Stage --> Prod["prod schedule<br/>只接收已验证路径"]
 
   classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
   classDef gate fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;

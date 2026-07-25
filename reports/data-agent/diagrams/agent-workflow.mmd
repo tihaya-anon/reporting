@@ -1,10 +1,13 @@
 flowchart LR
-  A["选环境<br/>dev / stage / prod"] --> B["低成本验证<br/>API / S3 / DuckDB"]
-  B --> C["stage backfill<br/>验证数据路径"]
-  C --> D["prod schedule<br/>正式运行"]
-  D --> E["Dagster<br/>统一监控"]
-  E --> F["hooks<br/>按代码类型检查"]
+  A["接收任务<br/>确认环境"] --> B["读代码和 IaC<br/>确认边界"]
+  B --> C["更改代码<br/>只改必要文件"]
+  C --> D["低成本验证<br/>API / S3 / DuckDB"]
+  D --> E["stage backfill<br/>验证数据路径"]
+  E --> F["prod schedule<br/>正式运行"]
+  F --> G["Dagster<br/>读运行元数据"]
+  C -.-> H["format / lint hooks<br/>只看 changed files"]
+  H -.-> C
 
   classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
   classDef evidence fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
-  class B,C,E,F evidence;
+  class D,E,G,H evidence;

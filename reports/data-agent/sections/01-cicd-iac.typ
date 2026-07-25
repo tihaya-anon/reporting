@@ -5,7 +5,7 @@
 == dev、stage、prod 都有独立资源
 
 #slide-body(top: 0.14fr, bottom: 0.5fr)[
-dev、stage、prod 都有自己的 CI/CD、S3 bucket 和运行资源。区别不在资源有没有，而在 commit 历史和用途。
+dev、stage、prod 是三条分支，也各自有 CI/CD、S3 bucket 和运行资源。dev 一定是 stage 的祖先，stage 一定是 prod 的祖先；资源不共用，提交历史有先后。
 
 #report-diagram("../reports/data-agent/diagrams/fig/environment-boundary.svg", height: 5.1cm)
 ]
@@ -13,7 +13,7 @@ dev、stage、prod 都有自己的 CI/CD、S3 bucket 和运行资源。区别不
 == commit 历史决定验证顺序
 
 #slide-body[
-stage 的提交来自 dev，prod 的提交来自 stage。stage 通常跑 backfill 验证；prod 才跑 schedule 任务。
+stage 从 dev 提升，prod 从 stage 提升。stage 通常跑 backfill 验证；prod 才跑 schedule 任务。
 
 - dev：没有固定要求，适合早期检查。
 - stage：验证数据路径和权限。
