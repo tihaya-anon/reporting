@@ -1,8 +1,8 @@
 #import "../../diatypst/lib.typ": vis-slides
 
 #show: vis-slides.with(
-  title: "DataAgent 阶段复盘",
-  subtitle: "让 agent 能看懂、能验证、能发布",
+  title: "DataAgent agent 使用指引",
+  subtitle: "给技术和业务团队的工程操作约定",
   date: "2026-07-24",
   authors: ("Data Agent",),
   toc: true,

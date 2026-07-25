@@ -1,0 +1,10 @@
+flowchart LR
+  A["选环境<br/>dev / stage / prod"] --> B["低成本验证<br/>API / S3 / DuckDB"]
+  B --> C["stage backfill<br/>验证数据路径"]
+  C --> D["prod schedule<br/>正式运行"]
+  D --> E["Dagster<br/>统一监控"]
+  E --> F["hooks<br/>按代码类型检查"]
+
+  classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
+  classDef evidence fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
+  class B,C,E,F evidence;

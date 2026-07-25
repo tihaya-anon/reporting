@@ -1,42 +1,44 @@
-= 长任务要有反馈
+#import "../layout.typ": report-diagram, slide-body
 
-== 长任务必须异步化
+= hooks 把代码检查放到工具边界
 
-Terraform 和 Terragrunt 执行时间长、输出多、失败位置分散。agent 如果同步等待完整输出，会浪费上下文，也容易丢掉中间状态。tf/tg 需要异步执行 MCP：命令继续跑，agent 分批读取结果。
+== hook 类型取决于 agent 正在操作的代码
 
-机制是：
+#slide-body[
+hooks 属于代码操作时的机械检查，不属于业务流程步骤。
 
-- agent 发起 Terraform/Terragrunt 命令。
-- MCP 立即返回一个回调句柄或 jsonl 路径。
-- 底层命令仍然全量执行并写入磁盘，`-json` 输出落到 `/tmp/xxx.jsonl`。
-- agent 后续通过 tail 或回调函数增量读取状态。
-- MCP 内预置 jq pattern，可以直接返回 summary、diagnostics 等摘要。
-- agent 仍然可以自己读取 jsonl，并用 jq 做额外筛选。
+#report-diagram("../reports/data-agent/diagrams/fig/async-hooks.svg", height: 5.2cm)
+]
 
-== jsonl 方便分批读取
+== 业务 Python 代码走 black 和 pyright
 
-相比一次性终端输出，jsonl 更适合 agent 消费。每一行都是一个事件，能被 tail、jq 和 MCP summary 反复读取。
+#slide-body[
+改业务 Python 代码时，hook 应该先处理确定性问题。
 
 #table(
-  columns: (1fr, 1.45fr, 1.35fr),
+  columns: (1fr, 1.2fr, 1.2fr),
   inset: 5pt,
   align: (left, left, left),
-  [反馈类型], [同步输出的问题], [jsonl/异步的优势],
-  [plan 进度], [输出太长，容易淹没有用信息], [按 event 读取，只保留 resource change],
-  [错误诊断], [失败栈和上下文混在一起], [MCP 预置 jq 摘要，agent 也可自行 jq],
-  [长时间 apply], [agent 被阻塞], [agent 可以并行查看代码或准备回滚],
-  [结果归档], [终端输出难复用], [jsonl 文件可作为验证证据链接],
+  [检查], [发现什么], [agent 怎么处理],
+  [black], [格式噪声], [直接修],
+  [pyright], [类型问题], [修到通过],
+  [smoke], [路径错误], [保留失败输入],
 )
+]
 
-== post-tool hook 与 stop hook
+== IaC 代码走 fmt、validate 和 plan 摘要
 
-hooks 把质量检查从“agent 记得去做”改成“系统提醒或执行”。
+#slide-body[
+改 Terraform 或 Terragrunt 时，hook 不该只跑通用 lint。
 
-- `posttoolhook: formatter`：工具调用后自动格式化，减少 agent 修改文件后留下机械格式噪声。
-- `stophook: lint`：agent 准备结束时触发 lint，避免把明显质量问题留给用户发现。
-- formatter 只 warning，不阻塞 agent；lint 会 block，agent 被 block 后需要自己修复再继续。
-- 这些 hook 不替代测试，只把低成本、确定性的检查前移。
+- `tffmt`
+- `terragrunt hclfmt`
+- `tg validate`
+- plan summary / diagnostics
+]
 
-== 对 DataAgent 的影响
+== jsonl 只用于长命令的执行反馈
 
-异步执行和 hooks 改变了 DataAgent 的工作节奏：agent 发起动作，系统持续写出状态，工具处理格式，结束前再跑 lint。agent 不必把注意力耗在等待和记住检查项上，可以把上下文留给架构判断、失败诊断和数据口径。
+#slide-body[
+Terraform/Terragrunt apply 这类长命令需要 jsonl。它解决的是等待和筛选问题，不是业务步骤。
+]

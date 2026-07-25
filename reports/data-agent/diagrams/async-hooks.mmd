@@ -1,0 +1,13 @@
+flowchart LR
+  Agent["agent 操作代码"] --> Kind{"代码类型"}
+  Kind --> Py["业务 Python<br/>black / pyright"]
+  Kind --> Iac["IaC<br/>tffmt / tg validate"]
+  Kind --> Long["长命令<br/>jsonl / diagnostics"]
+  Py --> Fix["hook 反馈<br/>agent 先修"]
+  Iac --> Fix
+  Long --> Fix
+  Fix --> Done["交付<br/>带验证证据"]
+
+  classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
+  classDef muted fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
+  class Py,Iac,Long,Done muted;

@@ -1,0 +1,8 @@
+flowchart LR
+  Dev["dev<br/>独立 CI/CD<br/>独立 S3 / 资源<br/>早期检查"] --> Stage["stage<br/>commit 来自 dev<br/>独立 CI/CD / S3 / 资源<br/>backfill 验证"]
+  Stage --> Prod["prod<br/>commit 来自 stage<br/>独立 CI/CD / S3 / 资源<br/>schedule 任务"]
+  Prod --> Decision["agent 操作前<br/>先确认环境"]
+
+  classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
+  classDef muted fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
+  class Stage,Prod muted;

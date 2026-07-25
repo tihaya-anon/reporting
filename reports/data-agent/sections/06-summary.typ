@@ -1,25 +1,31 @@
-= 总结
+#import "../layout.typ": slide-body
 
-== 已经留下的工作路径
+= agent 使用要落成团队约定
 
-这轮 DataAgent 工作已经形成一条 agent 可以照着走的工程路径。
+== 技术团队负责把入口做实
 
-- 先读 IaC、pipeline 和 state 引用，判断环境、权限和发布范围。
-- 再用页面请求、source smoke、DuckDB 和小窗口 backfill 验证数据路径。
-- 发布时按 git sha、EFS release、supervisor healthcheck 和 Fargate rollback 控制切换。
-- 运行后先看 Dagster run、asset、partition、code location 和 `dlt` metadata，再进入 AWS 证据链。
-- 长任务用 jsonl 和异步 MCP 增量消费，结束前用 formatter 和 lint 处理确定性问题。
+#slide-body[
+技术侧要把入口做成 agent 能直接读、能直接跑的形式。
 
-== 还缺什么
+- 环境资源写进 IaC。
+- backfill 输入可复用。
+- Dagster metadata 足够定位。
+- hooks 按代码类型配置。
+]
 
-如果要对外讲，还需要补齐几类事实：
+== 业务团队负责定义可接受验证
 
-- supervisor 的 healthcheck 条件、切换策略和失败记录。
-- EFS release 与完整镜像发布的耗时对比。
-- ECR cache 命中率或减少重复构建的具体证据。
-- 异步 MCP 的实际输出样例，包括 summary、diagnostics 和 jsonl 路径。
-- hooks block 过哪些问题，以及它们是否减少了返工。
+#slide-body[
+业务侧要说清楚什么叫“可以进入 prod”。
 
-== 最后一句
+- 哪些 source 要先验证。
+- backfill 看哪个时间窗口。
+- schedule 出错影响哪些报表。
+- 哪些失败可以等待，哪些要回滚。
+]
 
-DataAgent 下一阶段要把这些工程入口变成默认工作流：每次变更都有可读上下文、可复现验证、可追踪发布和可解释失败。
+== 指令要具体到 agent 可以执行
+
+#slide-body[
+好的 agent 指令不是“检查一下”。它应该写清环境、输入、hook、通过条件和失败时的查询入口。
+]

@@ -1,0 +1,14 @@
+flowchart LR
+  CD["CD<br/>git sha"] --> EFS["EFS release<br/>publish package"]
+  EFS --> Sup["supervisor<br/>request activation"]
+  Sup --> New["candidate gRPC server<br/>start"]
+  New --> Health{"healthcheck"}
+  Health -->|healthy| Switch["fixed port 4000<br/>switch to new"]
+  Switch --> StopOld["old server<br/>shutdown after switch"]
+  StopOld --> Active["release active"]
+  Health -->|failed| KeepOld["fixed port 4000<br/>keep old server"]
+  KeepOld --> Failed["deploy failed"]
+
+  classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
+  classDef muted fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
+  class New,Switch,KeepOld muted;

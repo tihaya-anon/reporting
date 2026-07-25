@@ -1,0 +1,14 @@
+flowchart LR
+  Fail["失败告警"] --> Dagster["Dagster<br/>统一监控平台"]
+  Dagster --> Locate["定位对象<br/>run asset partition task"]
+  Locate --> AWS["AWS 证据<br/>logs storage tables"]
+  Locate --> Ingest{"采集失败?"}
+  Ingest --> Dlt["dlt library<br/>pagination request state"]
+  Dlt --> API["API 证据<br/>page cursor schema"]
+  AWS --> Fix["修复代码 / IaC / contract"]
+  API --> Fix
+  Fix --> Retry["同一 partition<br/>重新验证"]
+
+  classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
+  classDef evidence fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
+  class Dagster,Dlt,AWS,API evidence;
