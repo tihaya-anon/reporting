@@ -1,6 +1,6 @@
 #import "../layout.typ": report-diagram, slide-body
 
-= 小样本验证让反馈更快
+= 快速反馈金字塔
 
 == 数据路径先用小输入证明
 

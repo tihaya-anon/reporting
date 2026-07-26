@@ -1,6 +1,6 @@
 #import "../layout.typ": report-diagram, slide-body
 
-= 环境隔离用来减少影响范围
+= 分支与环境隔离
 
 == dev、stage、prod 都有独立资源
 

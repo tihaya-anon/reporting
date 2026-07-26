@@ -1,6 +1,6 @@
 #import "../layout.typ": slide-body
 
-= agent 使用要落成团队约定
+= 团队操作约定
 
 == 入口要做成 agent 能直接执行
 

@@ -1,6 +1,6 @@
 #import "../layout.typ": report-diagram, slide-body
 
-= async hooks 是长任务接口
+= 异步 hooks
 
 == hooks 的普通形态是 format 和 lint
 

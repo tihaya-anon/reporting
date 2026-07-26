@@ -1,6 +1,6 @@
 #import "../layout.typ": report-diagram, slide-body
 
-= Dagster 缓存运行元数据指针
+= Dagster 元数据缓存
 
 == Dagster 是排障入口，dlt 是采集库
 

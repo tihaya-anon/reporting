@@ -1,6 +1,6 @@
 #import "../layout.typ": report-diagram, slide-body
 
-= agent 使用方式必须写进工程流程
+= Agent 工作流
 
 == 这份材料给团队制定操作约定
 

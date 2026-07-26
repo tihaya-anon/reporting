@@ -3,7 +3,3 @@ flowchart LR
   Duck --> Smoke["source smoke<br/>小窗口 backfill"]
   Smoke --> Stage["stage pipeline<br/>验证 runtime metadata"]
   Stage --> Prod["prod schedule<br/>只接收已验证路径"]
-
-  classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
-  classDef gate fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
-  class Stage,Prod gate;

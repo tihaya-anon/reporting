@@ -1,11 +1,7 @@
 flowchart LR
-  Dev["branch: dev<br/>祖先分支<br/>早期检查"] -->|"promote commit"| Stage["branch: stage<br/>dev 是祖先<br/>backfill 验证"]
-  Stage -->|"promote commit"| Prod["branch: prod<br/>stage 是祖先<br/>schedule 任务"]
+  Dev["branch: dev<br/>祖先分支<br/>早期检查"] -->|"promote commit"| Stage["branch: stage<br/>backfill 验证"]
+  Stage -->|"promote commit"| Prod["branch: prod<br/>schedule 任务"]
 
-  Dev -.-> DevRes["dev resources<br/>CI/CD / S3 / runtime"]
-  Stage -.-> StageRes["stage resources<br/>CI/CD / S3 / runtime"]
-  Prod -.-> ProdRes["prod resources<br/>CI/CD / S3 / runtime"]
-
-  classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
-  classDef muted fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
-  class DevRes,StageRes,ProdRes muted;
+  Dev -.-> DevRes["dev resources<br/>CI/CD / S3 / redshift ..."]
+  Stage -.-> StageRes["stage resources<br/>CI/CD / S3 / redshift ..."]
+  Prod -.-> ProdRes["prod resources<br/>CI/CD / S3 / redshift ..."]

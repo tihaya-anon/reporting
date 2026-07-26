@@ -1,6 +1,6 @@
 #import "../layout.typ": report-diagram, slide-body
 
-= 发布机制要先保留旧版本
+= 蓝绿发布与回滚
 
 == agent 发布更需要版本边界
 

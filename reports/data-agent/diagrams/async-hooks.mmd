@@ -5,7 +5,3 @@ flowchart LR
   Agent --> Long["长任务<br/>apply / backfill / smoke"]
   Long --> Async["async hook<br/>jsonl 状态流"]
   Async --> Resume["agent 稍后读取<br/>继续排查或交付"]
-
-  classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
-  classDef muted fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
-  class Short,Async,Resume muted;

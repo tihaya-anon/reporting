@@ -9,7 +9,3 @@ flowchart LR
   Health -->|failed| KeepOld["fixed port 4000<br/>keep old server"]
   KeepOld --> Failed["deploy failed"]
   Failed --> Agent["agent 后续处理<br/>排查 / hotfix"]
-
-  classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
-  classDef muted fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
-  class New,Switch,KeepOld,Agent muted;

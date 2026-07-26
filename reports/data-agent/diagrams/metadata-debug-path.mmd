@@ -8,7 +8,3 @@ flowchart LR
   AWS --> Fix["修复代码 / IaC / contract"]
   API --> Fix
   Fix --> Retry["同一 partition<br/>重新验证"]
-
-  classDef default fill:#FFEEE5,stroke:#FF7A3D,color:#171717,stroke-width:1px;
-  classDef evidence fill:#FFF8F4,stroke:#E6E0DC,color:#171717,stroke-width:1px;
-  class Dagster,Dlt,AWS,API evidence;
